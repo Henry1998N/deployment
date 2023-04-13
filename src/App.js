@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
-
+import "./App.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 function App() {
+  const [houses, setHouses] = useState([]);
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_SERVER_URI)
+      .then((houses) => {
+        setHouses(houses.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {houses.map((house) => (
+        <div>
+          {house._id} - {house.name}
+        </div>
+      ))}
     </div>
   );
 }
